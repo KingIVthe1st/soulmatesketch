@@ -1,0 +1,78 @@
+{
+  "name": "soulmate-sketch-platform",
+  "version": "1.0.0",
+  "description": "AI-powered platform for creating custom soulmate sketches and compatibility profiles",
+  "main": "index.js",
+  "scripts": {
+    "dev": "concurrently \"npm run dev:frontend\" \"npm run dev:backend\" \"npm run dev:ai\"",
+    "dev:frontend": "cd frontend && npm run dev",
+    "dev:backend": "cd backend && npm run dev",
+    "dev:ai": "cd ai-services && python -m uvicorn main:app --reload --port 8001",
+    "build": "npm run build:frontend && npm run build:backend",
+    "build:frontend": "cd frontend && npm run build",
+    "build:backend": "cd backend && npm run build",
+    "start": "cd backend && npm start",
+    "test": "npm run test:frontend && npm run test:backend",
+    "test:frontend": "cd frontend && npm test",
+    "test:backend": "cd backend && npm test",
+    "lint": "npm run lint:frontend && npm run lint:backend",
+    "lint:frontend": "cd frontend && npm run lint",
+    "lint:backend": "cd backend && npm run lint",
+    "db:migrate": "cd backend && npx prisma migrate dev",
+    "db:seed": "cd backend && npx prisma db seed",
+    "db:studio": "cd backend && npx prisma studio",
+    "docker:build": "docker-compose build",
+    "docker:up": "docker-compose up -d",
+    "docker:down": "docker-compose down",
+    "deploy:staging": "npm run build && scripts/deploy-staging.sh",
+    "deploy:production": "npm run build && scripts/deploy-production.sh"
+  },
+  "keywords": [
+    "ai",
+    "soulmate",
+    "compatibility",
+    "dating",
+    "personality",
+    "astrology",
+    "sketch",
+    "art-generation",
+    "love",
+    "romance"
+  ],
+  "author": "Ivan Jackson <ivan@soulmate-sketch.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ivanjackson/soul-sketch-lpv2.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ivanjackson/soul-sketch-lpv2/issues"
+  },
+  "homepage": "https://soulmate-sketch.com",
+  "devDependencies": {
+    "concurrently": "^7.6.0",
+    "prettier": "^2.8.0",
+    "eslint": "^8.0.0",
+    "husky": "^8.0.0",
+    "lint-staged": "^13.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{json,md,yml,yaml}": [
+      "prettier --write"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged",
+      "pre-push": "npm test"
+    }
+  }
+}

@@ -1,0 +1,1451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Soulmate Sketch - Discover Your Perfect Match with AI</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;900&family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --primary-gradient: linear-gradient(135deg, #ff6b9d, #c44569, #9c27b0, #673ab7);
+            --cosmic-gradient: linear-gradient(135deg, #667eea, #764ba2, #f093fb, #f5576c);
+            --gold-gradient: linear-gradient(135deg, #ffd700, #ffb347, #ff8c69);
+            --aurora-gradient: linear-gradient(45deg, #00c9ff, #92fe9d, #ff9a9e, #fecfef, #ffc3a0);
+            --text-dark: #1a202c;
+            --text-light: #4a5568;
+            --bg-light: #f7fafc;
+            --white: #ffffff;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            overflow-x: hidden;
+            background: #0a0a0f;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Cosmic Background with Stars */
+        .cosmic-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(ellipse at center, #1a1a2e 0%, #16213e 25%, #0f172a 100%);
+            z-index: -1;
+        }
+        
+        /* Hero Stats */
+        .hero-stats {
+            display: flex;
+            gap: 30px;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+        
+        .stat {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 15px 20px;
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .stat strong {
+            display: block;
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: #ffd700;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+        }
+        
+        .stat span {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+        
+        .guarantee {
+            font-size: 0.95rem;
+            color: rgba(255, 255, 255, 0.7);
+            margin-top: 20px;
+            font-style: italic;
+        }
+        
+        .stars-layer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(2px 2px at 20px 30px, #eee, transparent),
+                radial-gradient(2px 2px at 40px 70px, rgba(255,255,255,0.8), transparent),
+                radial-gradient(1px 1px at 90px 40px, #fff, transparent),
+                radial-gradient(1px 1px at 130px 80px, rgba(255,255,255,0.6), transparent),
+                radial-gradient(2px 2px at 160px 30px, #ddd, transparent);
+            background-repeat: repeat;
+            background-size: 200px 100px;
+            animation: sparkle 3s linear infinite;
+            z-index: -1;
+        }
+        
+        @keyframes sparkle {
+            0%, 100% { opacity: 0.8; }
+            50% { opacity: 1; }
+        }
+        
+        /* Constellation Lines */
+        .constellation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+        
+        .constellation svg {
+            width: 100%;
+            height: 100%;
+        }
+        
+        .constellation-line {
+            stroke: rgba(255, 255, 255, 0.3);
+            stroke-width: 1;
+            fill: none;
+            animation: constellation-glow 4s ease-in-out infinite alternate;
+        }
+        
+        @keyframes constellation-glow {
+            0% { stroke-opacity: 0.3; }
+            100% { stroke-opacity: 0.8; }
+        }
+        
+        /* Floating Zodiac Symbols */
+        .zodiac-float {
+            position: fixed;
+            font-size: 30px;
+            color: rgba(255, 255, 255, 0.1);
+            animation: float-zodiac 20s infinite linear;
+            z-index: 1;
+        }
+        
+        @keyframes float-zodiac {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.3; }
+            90% { opacity: 0.3; }
+            100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+        }
+        
+        /* Aurora Effect */
+        .aurora {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--aurora-gradient);
+            opacity: 0.1;
+            animation: aurora-dance 8s ease-in-out infinite alternate;
+            z-index: 0;
+            pointer-events: none;
+        }
+        
+        @keyframes aurora-dance {
+            0% { transform: translateX(-100%) skewX(-15deg); }
+            100% { transform: translateX(100%) skewX(15deg); }
+        }
+        
+        /* Shooting Stars */
+        .shooting-star {
+            position: fixed;
+            width: 2px;
+            height: 2px;
+            background: white;
+            border-radius: 50%;
+            z-index: 1;
+            pointer-events: none;
+        }
+        
+        .shooting-star::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100px;
+            height: 1px;
+            background: linear-gradient(90deg, white, transparent);
+            transform-origin: left;
+        }
+        
+        @keyframes shooting {
+            0% { 
+                transform: translateX(-100px) translateY(-100px) rotate(45deg);
+                opacity: 0;
+            }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { 
+                transform: translateX(100vw) translateY(100vh) rotate(45deg);
+                opacity: 0;
+            }
+        }
+        
+        /* Header */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(10, 10, 15, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            z-index: 1000;
+            padding: 20px 0;
+            transition: all 0.3s ease;
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 28px;
+            font-weight: 900;
+            background: var(--aurora-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 30px rgba(255, 255, 255, 0.5);
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 40px;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: rgba(255, 255, 255, 0.8);
+            font-weight: 500;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--gold-gradient);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-links a:hover {
+            color: #ffd700;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+        }
+        
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+        
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            z-index: 10;
+            padding-top: 100px;
+        }
+        
+        .hero-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: center;
+        }
+        
+        .hero-text h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 4rem;
+            font-weight: 900;
+            color: white;
+            margin-bottom: 30px;
+            line-height: 1.1;
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+        }
+        
+        .highlight {
+            background: var(--aurora-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: glow-text 3s ease-in-out infinite alternate;
+        }
+        
+        @keyframes glow-text {
+            0% { filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.5)); }
+            100% { filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.8)); }
+        }
+        
+        .hero-text p {
+            font-size: 1.3rem;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 40px;
+            max-width: 500px;
+            line-height: 1.7;
+        }
+        
+        .cta-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 15px;
+            background: var(--aurora-gradient);
+            color: white;
+            padding: 20px 40px;
+            border: none;
+            border-radius: 60px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            text-decoration: none;
+            box-shadow: 
+                0 0 30px rgba(255, 107, 157, 0.4),
+                0 0 60px rgba(146, 254, 157, 0.2),
+                inset 0 0 20px rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.6s ease;
+        }
+        
+        .cta-button:hover::before {
+            left: 100%;
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 
+                0 0 50px rgba(255, 107, 157, 0.6),
+                0 0 100px rgba(146, 254, 157, 0.3),
+                0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+        
+        .hero-visual {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 500px;
+        }
+        
+        .cosmic-orb {
+            width: 400px;
+            height: 400px;
+            border-radius: 50%;
+            background: 
+                radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.3), transparent 50%),
+                conic-gradient(from 0deg, #ff6b9d, #c44569, #9c27b0, #673ab7, #667eea, #764ba2, #ff6b9d);
+            position: relative;
+            animation: cosmic-rotate 20s linear infinite;
+            box-shadow: 
+                0 0 100px rgba(255, 107, 157, 0.5),
+                inset 0 0 50px rgba(255, 255, 255, 0.1);
+        }
+        
+        @keyframes cosmic-rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .cosmic-orb::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            right: -10px;
+            bottom: -10px;
+            border-radius: 50%;
+            background: conic-gradient(from 0deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            animation: cosmic-rotate 15s linear infinite reverse;
+            z-index: -1;
+        }
+        
+        .cosmic-orb::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 300px;
+            height: 300px;
+            margin: -150px 0 0 -150px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1), transparent 70%);
+            backdrop-filter: blur(10px);
+        }
+        
+        .inner-constellation {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            color: white;
+            z-index: 5;
+        }
+        
+        .inner-constellation h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            margin-bottom: 10px;
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
+        }
+        
+        .inner-constellation p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .floating-hearts {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 3rem;
+            animation: float-pulse 3s ease-in-out infinite;
+        }
+        
+        @keyframes float-pulse {
+            0%, 100% { transform: translateY(0) scale(1); opacity: 0.7; }
+            50% { transform: translateY(-10px) scale(1.1); opacity: 1; }
+        }
+        
+        /* Features Section */
+        .features {
+            padding: 120px 0;
+            background: rgba(10, 10, 15, 0.9);
+            backdrop-filter: blur(10px);
+            position: relative;
+            z-index: 10;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 80px;
+        }
+        
+        .section-title h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            color: white;
+            margin-bottom: 20px;
+            text-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
+        }
+        
+        .section-title p {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.7);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 40px;
+        }
+        
+        .feature-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            padding: 40px 30px;
+            border-radius: 25px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--aurora-gradient);
+            opacity: 0.1;
+            transition: left 0.6s ease;
+        }
+        
+        .feature-card:hover::before {
+            left: 0;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-15px) scale(1.02);
+            box-shadow: 
+                0 0 50px rgba(255, 107, 157, 0.3),
+                0 25px 50px rgba(0, 0, 0, 0.3);
+            border-color: rgba(255, 107, 157, 0.5);
+        }
+        
+        .feature-icon {
+            font-size: 4rem;
+            margin-bottom: 25px;
+            filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.5));
+        }
+        
+        .feature-card h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: white;
+        }
+        
+        .feature-card p {
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.7;
+        }
+        
+        /* How It Works */
+        .how-it-works {
+            padding: 120px 0;
+            background: rgba(10, 10, 15, 0.95);
+            position: relative;
+            z-index: 10;
+        }
+        
+        .how-it-works h2,
+        .how-it-works p {
+            color: white;
+        }
+        
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 50px;
+            margin-top: 80px;
+        }
+        
+        .step {
+            text-align: center;
+            position: relative;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            padding: 40px 30px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.4s ease;
+        }
+        
+        .step:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+        
+        .step-number {
+            width: 80px;
+            height: 80px;
+            background: var(--aurora-gradient);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: 700;
+            margin: 0 auto 25px;
+            box-shadow: 0 0 30px rgba(255, 107, 157, 0.5);
+        }
+        
+        .step h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.4rem;
+            margin-bottom: 15px;
+            color: white;
+        }
+        
+        .step p {
+            color: rgba(255, 255, 255, 0.8);
+        }
+        
+        /* Pricing */
+        .pricing {
+            padding: 120px 0;
+            background: rgba(10, 10, 15, 0.98);
+            position: relative;
+            z-index: 10;
+        }
+        
+        .pricing h2,
+        .pricing p {
+            color: white;
+        }
+        
+        .pricing-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 40px;
+            margin-top: 80px;
+        }
+        
+        .pricing-card {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(30px);
+            padding: 50px 40px;
+            border-radius: 30px;
+            text-align: center;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .pricing-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--aurora-gradient);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            z-index: -1;
+        }
+        
+        .pricing-card:hover::before {
+            opacity: 0.1;
+        }
+        
+        .pricing-card:hover {
+            transform: translateY(-15px) scale(1.03);
+            box-shadow: 
+                0 0 60px rgba(255, 107, 157, 0.4),
+                0 30px 60px rgba(0, 0, 0, 0.4);
+            border-color: rgba(255, 107, 157, 0.6);
+        }
+        
+        .pricing-card.featured {
+            border: 2px solid #ff6b9d;
+            transform: scale(1.05);
+            box-shadow: 0 0 40px rgba(255, 107, 157, 0.3);
+        }
+        
+        .badge {
+            position: absolute;
+            top: -15px;
+            right: 30px;
+            background: var(--gold-gradient);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+        }
+        
+        .pricing-card h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            color: white;
+            margin-bottom: 15px;
+        }
+        
+        .price {
+            font-size: 3.5rem;
+            font-weight: 900;
+            color: white;
+            margin: 25px 0;
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+        }
+        
+        .price span {
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .features-list {
+            list-style: none;
+            margin: 35px 0;
+            text-align: left;
+        }
+        
+        .features-list li {
+            padding: 10px 0;
+            color: rgba(255, 255, 255, 0.8);
+            position: relative;
+            padding-left: 30px;
+            font-size: 1.1rem;
+        }
+        
+        .features-list li::before {
+            content: '✨';
+            position: absolute;
+            left: 0;
+            font-size: 1.2rem;
+        }
+        
+        /* Testimonials */
+        .testimonials {
+            padding: 120px 0;
+            background: rgba(10, 10, 15, 0.95);
+            position: relative;
+            z-index: 10;
+        }
+        
+        .testimonials h2,
+        .testimonials p {
+            color: white;
+        }
+        
+        .testimonial-slider {
+            max-width: 900px;
+            margin: 80px auto 0;
+            text-align: center;
+        }
+        
+        .testimonial {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(30px);
+            padding: 50px 40px;
+            border-radius: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 30px;
+            transition: all 0.4s ease;
+        }
+        
+        .testimonial:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+        
+        .testimonial p {
+            font-size: 1.3rem;
+            color: rgba(255, 255, 255, 0.9);
+            font-style: italic;
+            margin-bottom: 25px;
+            line-height: 1.7;
+        }
+        
+        .testimonial-author {
+            font-weight: 600;
+            color: white;
+            font-size: 1.1rem;
+        }
+        
+        .stars-rating {
+            color: #ffd700;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.5));
+        }
+        
+        /* Footer */
+        footer {
+            background: rgba(10, 10, 15, 0.98);
+            color: white;
+            padding: 80px 0 40px;
+            text-align: center;
+            position: relative;
+            z-index: 10;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 50px;
+            margin-bottom: 50px;
+        }
+        
+        .footer-section h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.4rem;
+            margin-bottom: 20px;
+            color: white;
+        }
+        
+        .footer-section a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            display: block;
+            margin-bottom: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .footer-section a:hover {
+            color: #ff6b9d;
+            text-shadow: 0 0 10px rgba(255, 107, 157, 0.5);
+        }
+        
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            margin-top: 40px;
+        }
+        
+        .social-links a {
+            width: 50px;
+            height: 50px;
+            background: var(--aurora-gradient);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            transition: all 0.4s ease;
+            box-shadow: 0 0 20px rgba(255, 107, 157, 0.3);
+        }
+        
+        .social-links a:hover {
+            transform: scale(1.2) translateY(-5px);
+            box-shadow: 0 0 30px rgba(255, 107, 157, 0.6);
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .hero-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+                gap: 50px;
+            }
+            
+            .hero-text h1 {
+                font-size: 2.8rem;
+            }
+            
+            .cosmic-orb {
+                width: 300px;
+                height: 300px;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+            
+            .features-grid,
+            .steps,
+            .pricing-cards {
+                grid-template-columns: 1fr;
+            }
+            
+            .section-title h2 {
+                font-size: 2.2rem;
+            }
+        }
+        
+        /* Scroll animations */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.8s ease;
+        }
+        
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Particle System */
+        .particle {
+            position: fixed;
+            width: 4px;
+            height: 4px;
+            background: white;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 1;
+        }
+        
+        @keyframes particle-float {
+            0% {
+                transform: translateY(100vh) translateX(0) scale(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-10vh) translateX(100px) scale(1);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Cosmic Background -->
+    <div class="cosmic-bg"></div>
+    <div class="stars-layer"></div>
+    <div class="aurora"></div>
+    
+    <!-- Constellation -->
+    <div class="constellation">
+        <svg>
+            <defs>
+                <filter id="glow">
+                    <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+                    <feMerge> 
+                        <feMergeNode in="coloredBlur"/>
+                        <feMergeNode in="SourceGraphic"/>
+                    </feMerge>
+                </filter>
+            </defs>
+            <g filter="url(#glow)">
+                <path class="constellation-line" d="M100,100 L200,150 L300,120 L400,180 L500,140"></path>
+                <path class="constellation-line" d="M150,200 L250,250 L350,220 L450,280"></path>
+                <path class="constellation-line" d="M80,300 L180,350 L280,320 L380,380 L480,340"></path>
+            </g>
+        </svg>
+    </div>
+    
+    <header>
+        <nav class="container">
+            <div class="logo">💝 Soulmate Sketch</div>
+            <ul class="nav-links">
+                <li><a href="#features">Features</a></li>
+                <li><a href="#how-it-works">How It Works</a></li>
+                <li><a href="#pricing">Pricing</a></li>
+                <li><a href="#testimonials">Reviews</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <h1>Discover Your <span class="highlight">Perfect Match</span> with AI Magic</h1>
+                    <p>Get a custom soulmate sketch & compatibility profile powered by advanced AI that analyzes your photo, personality, and energy signature. See exactly what your destined partner looks like before you meet them.</p>
+                    <div class="hero-stats">
+                        <div class="stat">
+                            <strong>50,000+</strong>
+                            <span>Sketches Created</span>
+                        </div>
+                        <div class="stat">
+                            <strong>89%</strong>
+                            <span>Accuracy Rate</span>
+                        </div>
+                        <div class="stat">
+                            <strong>48hrs</strong>
+                            <span>Delivery Time</span>
+                        </div>
+                    </div>
+                    <a href="#pricing" class="cta-button">
+                        ✨ Get My Soulmate Sketch Now
+                    </a>
+                    <p class="guarantee">💕 "Your soulmate might already be following you" - Join the viral #SoulmateSketchReveal trend!</p>
+                </div>
+                <div class="hero-visual">
+                    <div class="cosmic-orb">
+                        <div class="inner-constellation">
+                            <h3>AI-Powered</h3>
+                            <p>Love Discovery</p>
+                        </div>
+                        <div class="floating-hearts">💕</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="features" class="features">
+        <div class="container">
+            <div class="section-title fade-in">
+                <h2>How Our AI Soulmate Engine Works</h2>
+                <p>Advanced image analysis + personality profiling + energy signature matching = Your perfect cosmic connection revealed</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">📸</div>
+                    <h3>Photo Analysis & Energy Reading</h3>
+                    <p>Upload your photo and our AI analyzes your facial features, energy signature, and "vibe type" to understand your unique romantic blueprint and what you're naturally drawn to.</p>
+                </div>
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">🧠</div>
+                    <h3>Psychological Profiling & Attachment Style</h3>
+                    <p>Answer fun guided questions about your personality, turn-ons, dealbreakers, and celebrity crushes. Our AI creates your complete psychological profile and attachment style.</p>
+                </div>
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">🎨</div>
+                    <h3>Custom AI Art Generation</h3>
+                    <p>Choose your style: realistic, ethereal, anime, or mystical. Our AI creates a stunning visual sketch of your soulmate based on your unique compatibility data.</p>
+                </div>
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">📊</div>
+                    <h3>Soulmate Archetype Matching</h3>
+                    <p>Your profile is matched against our internal soulmate archetype database using zodiac compatibility, numerology, and relationship energy (yin/yang, protector/healer).</p>
+                </div>
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">💌</div>
+                    <h3>Complete Compatibility Report</h3>
+                    <p>Get your ideal first meeting scenario, love language match, what they're looking for right now, and when/where you'll likely meet your destined partner.</p>
+                </div>
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">📱</div>
+                    <h3>Viral-Ready Social Sharing</h3>
+                    <p>Join the #SoulmateSketchReveal trend! Get IG story-ready formats, mystery versions (blurred until shared), and reaction video prompts for maximum viral potential.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="how-it-works" class="how-it-works">
+        <div class="container">
+            <div class="section-title fade-in">
+                <h2>Your Cosmic Journey to Love in 4 Steps</h2>
+                <p>Discover your destined soulmate through our magical AI-powered process guided by the stars</p>
+            </div>
+            <div class="steps">
+                <div class="step fade-in">
+                    <div class="step-number">1</div>
+                    <h3>Share Your Cosmic Energy</h3>
+                    <p>Upload your photo and answer our fun, mystically-guided questions to reveal your unique love signature and astrological essence.</p>
+                </div>
+                <div class="step fade-in">
+                    <div class="step-number">2</div>
+                    <h3>AI & Astrology Unite</h3>
+                    <p>Our advanced AI analyzes your features, personality, and cosmic alignment to find your perfect energetic and zodiac match.</p>
+                </div>
+                <div class="step fade-in">
+                    <div class="step-number">3</div>
+                    <h3>Receive Your Mystical Sketch</h3>
+                    <p>Get a stunning, personalized artwork of your soulmate in your chosen style, blessed by the universe within 48 hours.</p>
+                </div>
+                <div class="step fade-in">
+                    <div class="step-number">4</div>
+                    <h3>Unlock Your Love Destiny</h3>
+                    <p>Explore your detailed compatibility report with astrological insights, love languages, and when/where you'll meet your match.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="pricing" class="pricing">
+        <div class="container">
+            <div class="section-title fade-in">
+                <h2>Choose Your Love Discovery Package</h2>
+                <p>Find the perfect cosmic option to reveal your soulmate and unlock your romantic destiny written in the stars</p>
+            </div>
+            <div class="pricing-cards">
+                <div class="pricing-card fade-in">
+                    <h3>Basic Discovery</h3>
+                    <div class="price">$19<span>/one-time</span></div>
+                    <ul class="features-list">
+                        <li>AI-generated soulmate sketch</li>
+                        <li>Basic personality traits & name</li>
+                        <li>Zodiac compatibility overview</li>
+                        <li>Digital download (48hr delivery)</li>
+                        <li>Social media ready format</li>
+                    </ul>
+                    <a href="#" class="cta-button">Get Basic Discovery</a>
+                </div>
+                <div class="pricing-card featured fade-in">
+                    <div class="badge">Most Popular ⭐</div>
+                    <h3>Premium Profile</h3>
+                    <div class="price">$39<span>/one-time</span></div>
+                    <ul class="features-list">
+                        <li>Everything in Basic Discovery</li>
+                        <li>Full 2-3 page personality report</li>
+                        <li>Complete astrological alignment</li>
+                        <li>Love language & compatibility score</li>
+                        <li>Ideal first meeting scenario</li>
+                        <li>What they're looking for right now</li>
+                        <li>Priority 24-hour delivery</li>
+                    </ul>
+                    <a href="#" class="cta-button">Get Premium Profile</a>
+                </div>
+                <div class="pricing-card fade-in">
+                    <h3>Deluxe Mystical</h3>
+                    <div class="price">$69<span>/one-time</span></div>
+                    <ul class="features-list">
+                        <li>Everything in Premium Profile</li>
+                        <li>Handwritten spiritual reading</li>
+                        <li>Aura color interpretation & sketch</li>
+                        <li>Twin flame vs soulmate analysis</li>
+                        <li>Past life connection insights</li>
+                        <li>Physical printed mystical scroll</li>
+                        <li>Hidden message from your soulmate</li>
+                        <li>Express 6-hour delivery</li>
+                    </ul>
+                    <a href="#" class="cta-button">Get Deluxe Mystical</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="testimonials" class="testimonials">
+        <div class="container">
+            <div class="section-title fade-in">
+                <h2>Cosmic Love Stories from Our Community</h2>
+                <p>See how Soulmate Sketch has helped thousands discover their star-crossed matches</p>
+            </div>
+            <div class="testimonial-slider fade-in">
+                <div class="testimonial">
+                    <div class="stars-rating">⭐⭐⭐⭐⭐</div>
+                    <p>"OMG! This is actually insane how accurate it was. I got my sketch 2 days ago and literally bumped into someone at Starbucks who looks EXACTLY like my sketch. We exchanged numbers and I'm shook. The universe is real! 💕✨"</p>
+                    <div class="testimonial-author">- @sarahjones26, 150K TikTok views</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>🌟 Soulmate Sketch</h3>
+                    <p>Discover your perfect match through AI-powered love analysis, beautiful custom artwork, and cosmic wisdom written in the stars.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <a href="#features">Magical Features</a>
+                    <a href="#how-it-works">Cosmic Process</a>
+                    <a href="#pricing">Love Packages</a>
+                    <a href="#testimonials">Success Stories</a>
+                </div>
+                <div class="footer-section">
+                    <h3>Mystic Support</h3>
+                    <a href="#">FAQ & Cosmic Guidance</a>
+                    <a href="#">Privacy & Spiritual Ethics</a>
+                    <a href="#">Terms of Divine Service</a>
+                    <a href="#">Contact Our Love Oracles</a>
+                </div>
+            </div>
+            <div class="social-links">
+                <a href="#" aria-label="Facebook">📘</a>
+                <a href="#" aria-label="Instagram">📷</a>
+                <a href="#" aria-label="TikTok">🎵</a>
+                <a href="#" aria-label="YouTube">📺</a>
+            </div>
+            <p>&copy; 2024 Soulmate Sketch. All rights reserved. Made with 💕 and cosmic energy ✨</p>
+        </div>
+    </footer>
+
+    <script>
+        // Enhanced Zodiac Floating Animation
+        const zodiacSymbols = ['♈', '♉', '♊', '♋', '♌', '♍', '♎', '♏', '♐', '♑', '♒', '♓'];
+        
+        function createFloatingZodiac() {
+            const zodiac = document.createElement('div');
+            zodiac.className = 'zodiac-float';
+            zodiac.innerHTML = zodiacSymbols[Math.floor(Math.random() * zodiacSymbols.length)];
+            zodiac.style.left = Math.random() * 100 + 'vw';
+            zodiac.style.animationDuration = (Math.random() * 10 + 15) + 's';
+            zodiac.style.fontSize = (Math.random() * 20 + 25) + 'px';
+            
+            document.body.appendChild(zodiac);
+            
+            setTimeout(() => {
+                zodiac.remove();
+            }, 20000);
+        }
+        
+        setInterval(createFloatingZodiac, 3000);
+        
+        // Shooting Stars
+        function createShootingStar() {
+            const star = document.createElement('div');
+            star.className = 'shooting-star';
+            star.style.top = Math.random() * 50 + '%';
+            star.style.left = '-100px';
+            star.style.animation = `shooting ${Math.random() * 3 + 2}s linear forwards`;
+            
+            document.body.appendChild(star);
+            
+            setTimeout(() => {
+                star.remove();
+            }, 5000);
+        }
+        
+        setInterval(createShootingStar, 8000);
+        
+        // Enhanced Particle System
+        function createMagicParticle() {
+            const particles = ['✨', '💫', '⭐', '🌟', '💖', '💕', '🔮'];
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.innerHTML = particles[Math.floor(Math.random() * particles.length)];
+            particle.style.left = Math.random() * 100 + 'vw';
+            particle.style.animation = `particle-float ${Math.random() * 8 + 6}s linear forwards`;
+            particle.style.fontSize = (Math.random() * 15 + 12) + 'px';
+            
+            document.body.appendChild(particle);
+            
+            setTimeout(() => {
+                particle.remove();
+            }, 14000);
+        }
+        
+        setInterval(createMagicParticle, 1500);
+        
+        // Scroll animations with enhanced observer
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+        
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
+        });
+        
+        // Enhanced smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+        
+        // Enhanced header scroll effect with cosmic glow
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            const scrolled = window.scrollY;
+            
+            if (scrolled > 100) {
+                header.style.background = 'rgba(10, 10, 15, 0.95)';
+                header.style.boxShadow = '0 0 50px rgba(255, 107, 157, 0.3)';
+            } else {
+                header.style.background = 'rgba(10, 10, 15, 0.8)';
+                header.style.boxShadow = 'none';
+            }
+        });
+        
+        // Interactive cosmic effects on mouse move
+        document.addEventListener('mousemove', (e) => {
+            if (Math.random() < 0.02) {
+                const sparkles = ['✨', '💫', '⭐'];
+                const sparkle = document.createElement('div');
+                sparkle.innerHTML = sparkles[Math.floor(Math.random() * sparkles.length)];
+                sparkle.style.position = 'fixed';
+                sparkle.style.left = e.clientX + (Math.random() - 0.5) * 50 + 'px';
+                sparkle.style.top = e.clientY + (Math.random() - 0.5) * 50 + 'px';
+                sparkle.style.pointerEvents = 'none';
+                sparkle.style.zIndex = '9999';
+                sparkle.style.fontSize = (Math.random() * 10 + 12) + 'px';
+                sparkle.style.animation = 'cosmic-fade 2s ease-out forwards';
+                document.body.appendChild(sparkle);
+                
+                setTimeout(() => {
+                    sparkle.remove();
+                }, 2000);
+            }
+        });
+        
+        // Enhanced button ripple effects
+        document.querySelectorAll('.cta-button').forEach(button => {
+            button.addEventListener('click', function(e) {
+                const ripple = document.createElement('span');
+                const rect = this.getBoundingClientRect();
+                const size = Math.max(rect.width, rect.height);
+                const x = e.clientX - rect.left - size / 2;
+                const y = e.clientY - rect.top - size / 2;
+                
+                ripple.style.width = ripple.style.height = size + 'px';
+                ripple.style.left = x + 'px';
+                ripple.style.top = y + 'px';
+                ripple.classList.add('cosmic-ripple');
+                
+                this.appendChild(ripple);
+                
+                setTimeout(() => {
+                    ripple.remove();
+                }, 800);
+            });
+        });
+        
+        // Enhanced testimonial rotation with more variety
+        let currentTestimonial = 0;
+        const testimonials = [
+            {
+                stars: "⭐⭐⭐⭐⭐",
+                text: "OMG! This is actually insane how accurate it was. I got my sketch 2 days ago and literally bumped into someone at Starbucks who looks EXACTLY like my sketch. We exchanged numbers and I'm shook. The universe is real! 💕✨",
+                author: "@sarahjones26, 150K TikTok views"
+            },
+            {
+                stars: "⭐⭐⭐⭐⭐",
+                text: "I was so skeptical but decided to try it for my TikTok. The sketch reveal video got 2.3M views and SO many people said it looked like their ex or current crush. The personality report was scary accurate too! 🔮",
+                author: "@luna_mystic, went viral on TikTok"
+            },
+            {
+                stars: "⭐⭐⭐⭐⭐",
+                text: "The blind box challenge was amazing! I waited 7 days before opening and when I did, it looked EXACTLY like my coworker I've had a crush on for months. Turns out he likes me too! We're dating now! 💖",
+                author: "@crystalhearts, 89K followers"
+            },
+            {
+                stars: "⭐⭐⭐⭐⭐",
+                text: "Me and my girls all got sketches for our mystical night and we were SCREAMING. Mine looked like a mix of Michael B. Jordan and my dream guy. The aura reading said I attract protector energy - so true! ✨",
+                author: "@jessicat24, featured on Instagram"
+            },
+            {
+                stars: "⭐⭐⭐⭐⭐",
+                text: "The 'who's thinking about you' version was WILD. It literally drew my ex who's been texting me again. The AI somehow knew he was back in my energy field. This technology is next level! 🤯",
+                author: "@manifestbabe, 45K TikTok likes"
+            }
+        ];
+        
+        function rotateTestimonials() {
+            const testimonialEl = document.querySelector('.testimonial');
+            if (testimonialEl) {
+                testimonialEl.style.opacity = '0';
+                testimonialEl.style.transform = 'translateY(30px)';
+                
+                setTimeout(() => {
+                    const testimonial = testimonials[currentTestimonial];
+                    testimonialEl.innerHTML = `
+                        <div class="stars-rating">${testimonial.stars}</div>
+                        <p>"${testimonial.text}"</p>
+                        <div class="testimonial-author">- ${testimonial.author}</div>
+                    `;
+                    
+                    testimonialEl.style.opacity = '1';
+                    testimonialEl.style.transform = 'translateY(0)';
+                    
+                    currentTestimonial = (currentTestimonial + 1) % testimonials.length;
+                }, 400);
+            }
+        }
+        
+        setInterval(rotateTestimonials, 5000);
+        
+        // Cosmic loading animation
+        window.addEventListener('load', () => {
+            document.body.style.opacity = '0';
+            document.body.style.transition = 'opacity 1s ease';
+            
+            setTimeout(() => {
+                document.body.style.opacity = '1';
+            }, 200);
+        });
+        
+        // Enhanced click magic effects
+        document.addEventListener('click', (e) => {
+            const magicElements = ['💫', '✨', '🌟', '💕', '💖', '🔮', '⭐'];
+            
+            for (let i = 0; i < 5; i++) {
+                const magic = document.createElement('div');
+                magic.innerHTML = magicElements[Math.floor(Math.random() * magicElements.length)];
+                magic.style.position = 'fixed';
+                magic.style.left = e.clientX + (Math.random() - 0.5) * 100 + 'px';
+                magic.style.top = e.clientY + (Math.random() - 0.5) * 100 + 'px';
+                magic.style.pointerEvents = 'none';
+                magic.style.zIndex = '9999';
+                magic.style.fontSize = (Math.random() * 15 + 15) + 'px';
+                magic.style.animation = `cosmic-burst ${Math.random() * 2 + 2}s ease-out forwards`;
+                document.body.appendChild(magic);
+                
+                setTimeout(() => {
+                    magic.remove();
+                }, 4000);
+            }
+        });
+        
+        // Add dynamic CSS animations
+        const dynamicStyles = document.createElement('style');
+        dynamicStyles.textContent = `
+            @keyframes cosmic-fade {
+                0% { opacity: 1; transform: scale(0) rotate(0deg); }
+                50% { opacity: 1; transform: scale(1.3) rotate(180deg); }
+                100% { opacity: 0; transform: scale(0.5) rotate(360deg) translateY(-60px); }
+            }
+            
+            .cosmic-ripple {
+                position: absolute;
+                border-radius: 50%;
+                background: radial-gradient(circle, rgba(255, 255, 255, 0.6), transparent);
+                transform: scale(0);
+                animation: cosmic-ripple-animation 0.8s ease-out;
+                pointer-events: none;
+            }
+            
+            @keyframes cosmic-ripple-animation {
+                to {
+                    transform: scale(3);
+                    opacity: 0;
+                }
+            }
+            
+            @keyframes cosmic-burst {
+                0% {
+                    opacity: 1;
+                    transform: scale(0) rotate(0deg);
+                }
+                20% {
+                    opacity: 1;
+                    transform: scale(1.5) rotate(90deg);
+                }
+                100% {
+                    opacity: 0;
+                    transform: scale(0.3) rotate(360deg) translate(${Math.random() * 200 - 100}px, ${Math.random() * 200 - 100}px);
+                }
+            }
+        `;
+        document.head.appendChild(dynamicStyles);
+        
+        // Parallax effect for cosmic elements
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const parallaxElements = document.querySelectorAll('.cosmic-orb, .constellation, .aurora');
+            
+            parallaxElements.forEach(element => {
+                const speed = 0.3;
+                element.style.transform = `translateY(${scrolled * speed}px)`;
+            });
+        });
+    </script>
+</body>
+</html>
