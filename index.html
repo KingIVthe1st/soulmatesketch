@@ -1005,6 +1005,58 @@
             transition: transform 0.2s ease;
         }
 
+        /* Back to top */
+        #backToTop {
+            position: fixed;
+            right: 24px;
+            bottom: 24px;
+            width: 52px;
+            height: 52px;
+            border: 1px solid rgba(255,255,255,0.25);
+            border-radius: 999px;
+            background: linear-gradient(135deg, rgba(255,107,157,0.35), rgba(0,201,255,0.35));
+            color: #fff;
+            display: grid;
+            place-items: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.35), 0 0 18px rgba(255,107,157,0.25);
+            cursor: pointer;
+            opacity: 0;
+            transform: translateY(10px);
+            pointer-events: none;
+            transition: opacity 0.25s ease, transform 0.25s ease;
+            z-index: 1500;
+        }
+        #backToTop.show { opacity: 1; transform: translateY(0); pointer-events: auto; }
+
+        /* Cursor glow */
+        .cursor-glow {
+            position: fixed;
+            width: 240px;
+            height: 240px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 50% 50%, rgba(255,107,157,0.14), rgba(0,201,255,0.08) 60%, rgba(0,0,0,0) 70%);
+            filter: blur(24px);
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.5;
+            mix-blend-mode: screen;
+        }
+
+        /* Reduced motion support */
+        @media (prefers-reduced-motion: reduce) {
+            .cosmic-orb,
+            .stars-layer,
+            .aurora,
+            .zodiac-float,
+            .shooting-star,
+            .sparkle,
+            .particle,
+            .feature-card,
+            .pricing-card { animation: none !important; transition: none !important; }
+            #cosmicCanvas { display: none !important; }
+        }
+
         /* WOW: section grid overlay helper */
         .with-grid { position: relative; }
         .with-grid::after {
@@ -1137,6 +1189,7 @@
     <div class="cosmic-bg"></div>
     <div class="stars-layer"></div>
     <div class="aurora"></div>
+    <div class="cursor-glow" id="cursorGlow"></div>
     
     <!-- Constellation -->
     <div class="constellation">
@@ -1417,6 +1470,9 @@
         </div>
     </section>
 
+    <!-- Back to top button -->
+    <button id="backToTop" aria-label="Back to top">⬆️</button>
+
     <footer>
         <div class="container">
             <div class="footer-content">
@@ -1576,9 +1632,22 @@
             const nav = document.querySelector('nav');
             nav.addEventListener('mouseleave', () => indicator.style.opacity = '0');
         })();
+
+        // Back to top click
+        (function initBackToTop(){
+            const btn = document.getElementById('backToTop');
+            if (!btn) return;
+            btn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+        })();
         
         // Interactive cosmic effects on mouse move
         document.addEventListener('mousemove', (e) => {
+            // Cursor glow tracker
+            const glow = document.getElementById('cursorGlow');
+            if (glow) {
+                glow.style.left = e.clientX + 'px';
+                glow.style.top = e.clientY + 'px';
+            }
             if (Math.random() < 0.02) {
                 const sparkles = ['✨', '💫', '⭐'];
                 const sparkle = document.createElement('div');
@@ -1914,6 +1983,12 @@
             const progress = Math.max(0, Math.min(1, scrolled / docHeight));
             const bar = document.getElementById('scroll-progress');
             if (bar) bar.style.width = (progress * 100) + '%';
+
+            // Back to top visibility
+            const topBtn = document.getElementById('backToTop');
+            if (topBtn) {
+                if (scrolled > 600) topBtn.classList.add('show'); else topBtn.classList.remove('show');
+            }
         });
     </script>
 </body>
