@@ -219,11 +219,35 @@
             padding: 20px 0;
             transition: all 0.3s ease;
         }
+        /* WOW: header shine + gradient baseline */
+        header::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(120deg, transparent 30%, rgba(255,255,255,0.08) 45%, transparent 60%);
+            pointer-events: none;
+            transform: translateX(-100%);
+            animation: header-shine 8s linear infinite;
+        }
+        header::after {
+            content: '';
+            position: absolute;
+            left: 0; right: 0; bottom: 0;
+            height: 2px;
+            background: linear-gradient(90deg, rgba(255,107,157,0.6), rgba(255,215,0,0.6), rgba(0,201,255,0.6));
+            box-shadow: 0 0 20px rgba(255,107,157,0.2);
+            pointer-events: none;
+        }
+        @keyframes header-shine {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
         
         nav {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            position: relative;
         }
         
         .logo {
@@ -271,6 +295,38 @@
         .nav-links a:hover::after {
             width: 100%;
         }
+
+        /* WOW: floating nav indicator */
+        .nav-indicator {
+            position: absolute;
+            height: 36px;
+            border-radius: 999px;
+            background: radial-gradient(70% 120% at 30% 30%, rgba(255,107,157,0.25), rgba(0,0,0,0)) ,
+                        linear-gradient(135deg, rgba(255,107,157,0.35), rgba(0,201,255,0.35));
+            border: 1px solid rgba(255,255,255,0.18);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.25), 0 0 24px rgba(255,107,157,0.25);
+            transform: translate(var(--nx,0px), var(--ny,0px));
+            transition: width 0.25s ease, transform 0.25s ease, opacity 0.25s ease;
+            opacity: 0;
+        }
+
+        .nav-sparkle {
+            position: absolute;
+            width: 8px; height: 8px;
+            background: radial-gradient(circle, #fff, rgba(255,255,255,0));
+            border-radius: 50%;
+            pointer-events: none;
+            animation: sparkle-pop 700ms ease-out forwards;
+            filter: drop-shadow(0 0 8px rgba(255,255,255,0.8));
+        }
+        @keyframes sparkle-pop {
+            0% { transform: scale(0); opacity: 0; }
+            40% { transform: scale(1.2); opacity: 1; }
+            100% { transform: scale(0.2) translateY(-10px); opacity: 0; }
+        }
+
+        header.scrolled { padding: 10px 0; }
         
         /* Hero Section */
         .hero {
@@ -785,6 +841,60 @@
             margin-bottom: 20px;
             filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.5));
         }
+
+        /* Trust & FAQ */
+        .trust, .faq, .cta-band {
+            padding: 120px 0;
+            background: rgba(10,10,15,0.96);
+            position: relative;
+            z-index: 10;
+        }
+        .trust-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+        .trust-item {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 18px;
+            padding: 24px;
+            backdrop-filter: blur(14px);
+        }
+        .trust-item h4 { color: #fff; margin-bottom: 10px; font-family: 'Playfair Display', serif; }
+        .trust-item p { color: rgba(255,255,255,0.8); }
+
+        .faq-items {
+            max-width: 900px;
+            margin: 50px auto 0;
+            display: grid;
+            gap: 16px;
+        }
+        .faq-items details {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 16px;
+            padding: 18px 22px;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+        .faq-items details[open] { border-color: rgba(255,107,157,0.6); box-shadow: 0 0 24px rgba(255,107,157,0.2); }
+        .faq-items summary {
+            cursor: pointer;
+            color: #fff;
+            font-weight: 600;
+            outline: none;
+        }
+        .faq-items p { color: rgba(255,255,255,0.8); margin-top: 10px; }
+
+        .cta-band .inner {
+            text-align: center;
+            background: linear-gradient(135deg, rgba(255,107,157,0.15), rgba(0,201,255,0.15));
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 24px;
+            padding: 40px 20px;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.35);
+        }
         
         /* Footer */
         footer {
@@ -1050,6 +1160,7 @@
     
     <header>
         <nav class="container">
+            <span id="nav-indicator" class="nav-indicator"></span>
             <div class="logo">💝 Soulmate Sketch</div>
             <ul class="nav-links">
                 <li><a href="#features">Features</a></li>
@@ -1239,6 +1350,73 @@
         </div>
     </section>
 
+    <!-- Trust signals section (moved lower) -->
+    <section class="trust section-effects" id="trust">
+        <div class="container">
+            <div class="section-title fade-in">
+                <h2>Why People Trust Soulmate Sketch</h2>
+                <p>Clear results, fast delivery, and a magical experience that blends psychology with cosmic wonder</p>
+            </div>
+            <div class="trust-list">
+                <div class="trust-item fade-in">
+                    <h4>Transparent Delivery</h4>
+                    <p>Digital sketch delivered in 48 hours. Express options available for rush orders.</p>
+                </div>
+                <div class="trust-item fade-in">
+                    <h4>Privacy First</h4>
+                    <p>Your photos and answers are encrypted and never shared. One-click deletion anytime.</p>
+                </div>
+                <div class="trust-item fade-in">
+                    <h4>Real Human Quality Control</h4>
+                    <p>Every AI result is reviewed by a human artist for clarity and aesthetic polish.</p>
+                </div>
+                <div class="trust-item fade-in">
+                    <h4>Viral-Ready Formats</h4>
+                    <p>IG Story versions, mystery blur reveals, and reaction prompts built-in.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ section (moved lower) -->
+    <section class="faq section-effects" id="faq">
+        <div class="container">
+            <div class="section-title fade-in">
+                <h2>Frequently Asked Questions</h2>
+                <p>Everything you need to know before you summon your sketch</p>
+            </div>
+            <div class="faq-items">
+                <details class="fade-in">
+                    <summary>How accurate is the soulmate sketch?</summary>
+                    <p>We combine your answers, photo cues, and archetype matching to generate a look and personality that many users report recognizing. Treat it as a magical guide, not a guarantee.</p>
+                </details>
+                <details class="fade-in">
+                    <summary>Do I have to upload a photo?</summary>
+                    <p>No. A photo improves style cues and facial attributes, but you can opt out and rely on your answers only.</p>
+                </details>
+                <details class="fade-in">
+                    <summary>What do I actually receive?</summary>
+                    <p>A high-resolution sketch image plus a compatibility profile with love languages, meeting scenario, and alignment insights. Premium tiers include aura color and optional printed scroll.</p>
+                </details>
+                <details class="fade-in">
+                    <summary>Is my data private?</summary>
+                    <p>Yes. We store securely and auto-delete uploads on request. We never sell personal data.</p>
+                </details>
+            </div>
+        </div>
+    </section>
+
+    <!-- Bottom CTA band (moved to end) -->
+    <section class="cta-band section-effects" id="get-started">
+        <div class="container">
+            <div class="inner fade-in">
+                <h2 style="color:#fff; font-family:'Playfair Display', serif; margin-bottom:16px;">Ready to Meet Your Match?</h2>
+                <p style="color:rgba(255,255,255,0.85); margin-bottom:24px;">Join thousands discovering their sketch and compatibility profile within 48 hours.</p>
+                <a href="#pricing" class="cta-button">Start My Soulmate Sketch</a>
+            </div>
+        </div>
+    </section>
+
     <footer>
         <div class="container">
             <div class="footer-content">
@@ -1363,19 +1541,41 @@
             });
         });
         
-        // Enhanced header scroll effect with cosmic glow
+        // Enhanced header scroll effect with cosmic glow + compact padding
         window.addEventListener('scroll', () => {
             const header = document.querySelector('header');
             const scrolled = window.scrollY;
-            
             if (scrolled > 100) {
                 header.style.background = 'rgba(10, 10, 15, 0.95)';
                 header.style.boxShadow = '0 0 50px rgba(255, 107, 157, 0.3)';
+                header.classList.add('scrolled');
             } else {
                 header.style.background = 'rgba(10, 10, 15, 0.8)';
                 header.style.boxShadow = 'none';
+                header.classList.remove('scrolled');
             }
         });
+
+        // WOW: floating nav indicator that follows hovered/active link
+        (function initNavIndicator(){
+            const indicator = document.getElementById('nav-indicator');
+            const links = document.querySelectorAll('.nav-links a');
+            if (!indicator || !links.length) return;
+            function moveTo(el){
+                const r = el.getBoundingClientRect();
+                const nav = el.closest('nav').getBoundingClientRect();
+                const pad = 14;
+                indicator.style.width = (r.width + pad*2) + 'px';
+                indicator.style.transform = `translate(${r.left - nav.left - pad}px, ${r.top - nav.top - 4}px)`;
+                indicator.style.opacity = '1';
+            }
+            links.forEach(l => {
+                l.addEventListener('mouseenter', () => moveTo(l));
+                l.addEventListener('focus', () => moveTo(l));
+            });
+            const nav = document.querySelector('nav');
+            nav.addEventListener('mouseleave', () => indicator.style.opacity = '0');
+        })();
         
         // Interactive cosmic effects on mouse move
         document.addEventListener('mousemove', (e) => {
